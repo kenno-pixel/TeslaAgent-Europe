@@ -1,37 +1,56 @@
-"""
-TeslaAgent Europe
-Created by Kenno Nilisk
-AI-assisted development
-"""
-
-from dataclasses import dataclass
-
-
-@dataclass
-class SearchConfig:
-    model: str = "Tesla Model Y"
-    battery: str = "Long Range"
-    drivetrain: str = "AWD"
-    max_mileage: int = 50000
-    max_price: int = 35000
-    require_heat_pump: bool = True
-    require_warranty: bool = True
+from config import SearchConfig
+from models.car import Car
+from scoring.deal_score import DealScore
 
 
 def main():
+
     config = SearchConfig()
 
-    print("=" * 45)
-    print("🚗 TeslaAgent Europe v0.1")
-    print("=" * 45)
-    print(f"Model: {config.model}")
-    print(f"Battery: {config.battery}")
-    print(f"Drive: {config.drivetrain}")
-    print(f"Max mileage: {config.max_mileage:,} km")
-    print(f"Max price: €{config.max_price:,}")
-    print(f"Heat pump required: {config.require_heat_pump}")
-    print(f"Warranty required: {config.require_warranty}")
-    print("=" * 45)
+    car = Car(
+        source="TEST",
+        listing_id="1",
+        url="https://example.com",
+        model="Tesla Model Y",
+        version="Long Range",
+        price=34900,
+        mileage=28000,
+        registration="2023-05",
+        battery="Long Range",
+        drivetrain="AWD",
+        country="DE",
+        heat_pump=True,
+        tow_hitch=True,
+        fsd=False,
+        eap=True,
+    )
+
+    score = DealScore.calculate(car)
+
+    print("=" * 50)
+    print("TeslaAgent Europe")
+    print("=" * 50)
+    print()
+
+    print(car.model)
+    print(car.version)
+    print()
+
+    print(f"Price     : €{car.price}")
+    print(f"Mileage   : {car.mileage} km")
+    print(f"Country   : {car.country}")
+
+    print()
+    print(f"Deal Score : {score}/100")
+
+    print()
+    print("Search configuration")
+    print("--------------------")
+    print(config.model)
+    print(config.battery)
+    print(config.drivetrain)
+
+    print()
     print("System ready.")
 
 
